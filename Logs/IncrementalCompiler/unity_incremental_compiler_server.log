@@ -1,0 +1,232 @@
+ (0,0): Unity incremental compiler server
+ (0,0): watchdog active on pid: 102524
+ (0,0): [10/12/2018 09:57:12.899 AM] Unity.TextMeshPro.dll: no prior compilation found in cache
+ (0,0): [10/12/2018 09:57:12.912 AM] Unity.TextMeshPro.dll compiling...
+ (0,0): [10/12/2018 09:57:12.918 AM] Unity.CollabProxy.Editor.dll: no prior compilation found in cache
+ (0,0): [10/12/2018 09:57:12.930 AM] Unity.CollabProxy.Editor.dll compiling...
+ (0,0): [10/12/2018 09:57:12.934 AM] Unity.PackageManagerUI.Editor.dll: no prior compilation found in cache
+ (0,0): [10/12/2018 09:57:12.945 AM] Unity.PackageManagerUI.Editor.dll compiling...
+ (0,0): [10/12/2018 09:57:13.008 AM] Unity.Analytics.Android.Editor.dll: no prior compilation found in cache
+ (0,0): [10/12/2018 09:57:13.022 AM] Unity.Analytics.Android.Editor.dll compiling...
+ (0,0): [10/12/2018 09:57:14.174 AM] Unity.Analytics.Android.Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Unity.Analytics.Android.Editor.dll
+ (0,0): [10/12/2018 09:57:14.237 AM] Unity.Analytics.Android.Editor.dll compilation finished in 1215ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 09:57:14.387 AM] Unity.CollabProxy.Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Unity.CollabProxy.Editor.dll
+ (0,0): [10/12/2018 09:57:14.388 AM] Unity.PackageManagerUI.Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Unity.PackageManagerUI.Editor.dll
+ (0,0): [10/12/2018 09:57:14.391 AM] Unity.TextMeshPro.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Unity.TextMeshPro.dll
+ (0,0): [10/12/2018 09:57:14.456 AM] Unity.PackageManagerUI.Editor.dll compilation finished in 1510ms  source files re-parsed: 52 metadata reloaded: 153
+ (0,0): [10/12/2018 09:57:14.466 AM] Unity.TextMeshPro.dll compilation finished in 1553ms  source files re-parsed: 45 metadata reloaded: 197
+ (0,0): [10/12/2018 09:57:14.456 AM] Unity.CollabProxy.Editor.dll compilation finished in 1525ms  source files re-parsed: 17 metadata reloaded: 199
+ (0,0): [10/12/2018 09:57:14.804 AM] Unity.TextMeshPro.Editor.dll: no prior compilation found in cache
+ (0,0): [10/12/2018 09:57:14.816 AM] Unity.TextMeshPro.Editor.dll compiling...
+ (0,0): [10/12/2018 09:57:15.044 AM] Unity.TextMeshPro.Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Unity.TextMeshPro.Editor.dll
+ (0,0): [10/12/2018 09:57:15.110 AM] Unity.TextMeshPro.Editor.dll compilation finished in 294ms  source files re-parsed: 40 metadata reloaded: 1
+ (0,0): [10/12/2018 09:57:15.313 AM] Assembly-CSharp.dll: no prior compilation found in cache
+ (0,0): [10/12/2018 09:57:15.324 AM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 09:57:15.351 AM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 09:57:15.376 AM] Assembly-CSharp.dll compilation finished in 52ms  source files re-parsed: 1 metadata reloaded: 4
+ (0,0): [10/12/2018 09:57:15.604 AM] Assembly-CSharp-Editor.dll: no prior compilation found in cache
+ (0,0): [10/12/2018 09:57:15.616 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 09:57:15.643 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 09:57:15.668 AM] Assembly-CSharp-Editor.dll compilation finished in 52ms  source files re-parsed: 1 metadata reloaded: 4
+ (0,0): [10/12/2018 09:57:30.070 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 09:57:30.102 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 09:57:30.128 AM] Assembly-CSharp-Editor.dll compilation finished in 58ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 09:57:30.139 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 09:57:36.790 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 09:57:36.820 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 09:57:36.846 AM] Assembly-CSharp-Editor.dll compilation finished in 55ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 09:57:36.857 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 09:58:38.781 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 09:58:38.806 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 09:58:38.834 AM] Assembly-CSharp-Editor.dll compilation finished in 52ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 09:58:38.845 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 10:01:18.861 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 10:01:18.893 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 10:01:18.921 AM] Assembly-CSharp-Editor.dll compilation finished in 59ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 10:01:18.932 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 10:01:34.575 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 10:01:34.601 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 10:01:34.626 AM] Assembly-CSharp-Editor.dll compilation finished in 50ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 10:01:34.637 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 10:01:59.439 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 10:01:59.465 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 10:01:59.491 AM] Assembly-CSharp-Editor.dll compilation finished in 52ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 10:01:59.503 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 10:02:09.108 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 10:02:09.132 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 10:02:09.158 AM] Assembly-CSharp-Editor.dll compilation finished in 50ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 10:02:09.169 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 10:02:14.276 AM] Compiler cache size is now 17.35 MB
+ (0,0): [10/12/2018 10:02:58.151 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 10:02:58.179 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 10:02:58.206 AM] Assembly-CSharp-Editor.dll compilation finished in 54ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 10:02:58.217 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 10:04:06.520 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 10:04:06.555 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 10:04:06.583 AM] Assembly-CSharp-Editor.dll compilation finished in 62ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 10:04:06.595 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 10:04:48.262 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 10:04:48.286 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 10:04:48.314 AM] Assembly-CSharp-Editor.dll compilation finished in 51ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 10:04:48.325 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:12:09.703 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:12:09.756 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:12:09.768 AM] Assembly-CSharp-Editor.dll compilation finished in 65ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:12:09.779 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:34:06.848 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:34:06.875 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:34:06.905 AM] Assembly-CSharp-Editor.dll compilation finished in 57ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:34:06.916 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:35:07.682 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:35:07.707 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:35:07.734 AM] Assembly-CSharp-Editor.dll compilation finished in 52ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:35:07.745 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:35:25.411 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:35:25.435 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:35:25.461 AM] Assembly-CSharp-Editor.dll compilation finished in 50ms  source files re-parsed: 0 metadata reloaded: 0
+ (0,0): [10/12/2018 11:35:25.472 AM] Assembly-CSharp-Editor.dll: compilation was cached, 0 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:37:35.122 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:37:35.147 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:37:35.174 AM] Assembly-CSharp-Editor.dll compilation finished in 52ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:37:35.186 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:38:28.634 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:38:28.662 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:38:28.690 AM] Assembly-CSharp-Editor.dll compilation finished in 55ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:38:28.701 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:48:52.946 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:48:52.972 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:48:53.001 AM] Assembly-CSharp-Editor.dll compilation finished in 54ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:48:53.012 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:50:30.858 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:50:30.883 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:50:30.910 AM] Assembly-CSharp-Editor.dll compilation finished in 52ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:50:30.921 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:51:17.794 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:51:17.819 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:51:17.846 AM] Assembly-CSharp-Editor.dll compilation finished in 51ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:51:17.857 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:51:57.088 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:51:57.115 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:51:57.141 AM] Assembly-CSharp-Editor.dll compilation finished in 53ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:51:57.153 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:52:05.110 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:52:05.135 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:52:05.161 AM] Assembly-CSharp-Editor.dll compilation finished in 50ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:52:05.172 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:54:38.312 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:54:38.339 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:54:38.367 AM] Assembly-CSharp-Editor.dll compilation finished in 54ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:54:38.378 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 11:57:15.434 AM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 11:57:15.460 AM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 11:57:15.492 AM] Assembly-CSharp-Editor.dll compilation finished in 57ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 11:57:15.503 AM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:10:18.326 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 12:10:18.351 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 12:10:18.378 PM] Assembly-CSharp.dll compilation finished in 51ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 12:10:18.389 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:10:18.675 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 12:10:18.706 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 12:10:18.732 PM] Assembly-CSharp-Editor.dll compilation finished in 56ms  source files re-parsed: 1 metadata reloaded: 1
+ (0,0): [10/12/2018 12:10:18.744 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:11:31.917 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 12:11:31.941 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 12:11:31.968 PM] Assembly-CSharp.dll compilation finished in 50ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 12:11:31.979 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:11:32.393 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 12:11:32.420 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 12:11:32.445 PM] Assembly-CSharp-Editor.dll compilation finished in 51ms  source files re-parsed: 0 metadata reloaded: 1
+ (0,0): [10/12/2018 12:11:32.456 PM] Assembly-CSharp-Editor.dll: compilation was cached, 0 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:28:56.186 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 12:28:56.216 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 12:28:56.229 PM] Assembly-CSharp.dll compilation finished in 43ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 12:28:56.240 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:29:02.766 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 12:29:02.791 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 12:29:02.818 PM] Assembly-CSharp.dll compilation finished in 52ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 12:29:02.829 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:29:03.282 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 12:29:03.307 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 12:29:03.333 PM] Assembly-CSharp-Editor.dll compilation finished in 50ms  source files re-parsed: 0 metadata reloaded: 1
+ (0,0): [10/12/2018 12:29:03.345 PM] Assembly-CSharp-Editor.dll: compilation was cached, 0 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:47:25.280 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 12:47:25.306 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 12:47:25.335 PM] Assembly-CSharp.dll compilation finished in 55ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 12:47:25.346 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:47:25.606 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 12:47:25.631 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 12:47:25.657 PM] Assembly-CSharp-Editor.dll compilation finished in 51ms  source files re-parsed: 0 metadata reloaded: 1
+ (0,0): [10/12/2018 12:47:25.668 PM] Assembly-CSharp-Editor.dll: compilation was cached, 0 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:47:43.442 PM] Compiler cache size is now 17.35 MB
+ (0,0): [10/12/2018 12:55:56.772 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 12:55:56.798 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 12:55:56.810 PM] Assembly-CSharp.dll compilation finished in 37ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 12:55:56.821 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:56:09.034 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 12:56:09.061 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 12:56:09.088 PM] Assembly-CSharp.dll compilation finished in 54ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 12:56:09.100 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 12:56:09.549 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 12:56:09.575 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 12:56:09.601 PM] Assembly-CSharp-Editor.dll compilation finished in 52ms  source files re-parsed: 0 metadata reloaded: 1
+ (0,0): [10/12/2018 12:56:09.613 PM] Assembly-CSharp-Editor.dll: compilation was cached, 0 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:03:47.640 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:03:47.668 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:03:47.698 PM] Assembly-CSharp-Editor.dll compilation finished in 58ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:03:47.709 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:04:23.934 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 01:04:23.955 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 01:04:23.982 PM] Assembly-CSharp.dll compilation finished in 48ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:04:23.993 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:04:24.294 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:04:24.322 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:04:24.348 PM] Assembly-CSharp-Editor.dll compilation finished in 54ms  source files re-parsed: 1 metadata reloaded: 1
+ (0,0): [10/12/2018 01:04:24.360 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:17:38.772 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:17:38.799 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:17:38.826 PM] Assembly-CSharp-Editor.dll compilation finished in 53ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:17:38.837 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:28:06.028 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:28:06.053 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:28:06.083 PM] Assembly-CSharp-Editor.dll compilation finished in 54ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:28:06.094 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:28:20.083 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:28:20.114 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:28:20.145 PM] Assembly-CSharp-Editor.dll compilation finished in 61ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:28:20.156 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:28:40.904 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:28:40.930 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:28:40.941 PM] Assembly-CSharp-Editor.dll compilation finished in 37ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:28:40.953 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:28:41.841 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:28:41.866 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:28:41.892 PM] Assembly-CSharp-Editor.dll compilation finished in 50ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:28:41.903 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:28:52.031 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:28:52.065 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:28:52.092 PM] Assembly-CSharp-Editor.dll compilation finished in 61ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:28:52.103 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:29:54.290 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:29:54.317 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:29:54.344 PM] Assembly-CSharp-Editor.dll compilation finished in 53ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:29:54.355 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:33:05.228 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:33:05.254 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:33:05.282 PM] Assembly-CSharp-Editor.dll compilation finished in 53ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:33:05.293 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:34:35.609 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 01:34:35.632 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 01:34:35.659 PM] Assembly-CSharp.dll compilation finished in 50ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:34:35.671 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:34:35.924 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:34:35.949 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:34:35.976 PM] Assembly-CSharp-Editor.dll compilation finished in 51ms  source files re-parsed: 1 metadata reloaded: 1
+ (0,0): [10/12/2018 01:34:35.987 PM] Assembly-CSharp-Editor.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:36:58.168 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/12/2018 01:36:58.191 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/12/2018 01:36:58.219 PM] Assembly-CSharp.dll compilation finished in 51ms  source files re-parsed: 1 metadata reloaded: 0
+ (0,0): [10/12/2018 01:36:58.230 PM] Assembly-CSharp.dll: compilation was cached, 1 file(s) were found to have changed.
+ (0,0): [10/12/2018 01:36:58.510 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/12/2018 01:36:58.539 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/12/2018 01:36:58.566 PM] Assembly-CSharp-Editor.dll compilation finished in 56ms  source files re-parsed: 0 metadata reloaded: 1
+ (0,0): [10/12/2018 01:36:58.578 PM] Assembly-CSharp-Editor.dll: compilation was cached, 0 file(s) were found to have changed.
