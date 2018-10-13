@@ -6,6 +6,7 @@ Shader "Custom/LineLight"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Color ("Color", Color) = (1, 1, 1, 1)
+        _Smoothness ("Smoothness", Range(0, 1)) = 0.5
     }
     SubShader
     {
@@ -38,6 +39,8 @@ Shader "Custom/LineLight"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Color;
+            float _Smoothness;
+
             float3 _LightPosition;
             float3 _LightRight;
             float3 _LightUp;
@@ -123,11 +126,12 @@ Shader "Custom/LineLight"
                     return GetNearestPointLine(a, b, p);
             }
 
-            float sdCapsule( float3 p, float3 a, float3 b, float r )
+            float sdLineSq(float3 p, float3 a, float3 b)
             {
                 float3 pa = p - a, ba = b - a;
                 float h = saturate(dot(pa,ba)/dot(ba,ba));
-                return length(pa - ba * h) - r;
+                float3 t = (pa - ba * h);
+                return dot(t, t);
             }
 
             float sdTorus( float3 p, float2 t )
@@ -149,36 +153,11 @@ Shader "Custom/LineLight"
                 return acos(dot(p0, p1));
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            float EvalutePunctualLightAttenuation(float3 lightToSample, float3 positionWS, float3 p0, float3 p1)
             {
-                i.normal = normalize(i.normal);
-                fixed4 col = tex2D(_MainTex, i.uv) * _Color;
-
-                float3 p0 = _LightPosition - _LightRight / 2 * _Length;
-                float3 p1 = _LightPosition + _LightRight / 2 * _Length;
-                
-                float3 p2 = _LightPosition - _LightForward / 2 * _Length;
-                float3 p3 = _LightPosition + _LightForward / 2 * _Length;
-
-#if 1
-                float3 lightPosition = GetNearestPointSegment(p0, p1, i.positionWS);
-#else
-                float3 near = min(GetNearestPointSegment(p0, p1, i.positionWS), );
-                float3 lightToSample = i.positionWS - near;
-#endif
-            
-                float3 lightToSample = i.positionWS - lightPosition;
-
-                // Energy conserving wrapped diffuse: http://blog.stevemcauley.com/2011/12/03/energy-conserving-wrapped-diffuse/
-                float w = 0;//SphericalLine(p0, p1);
-                float3 L = normalize(lightPosition - i.positionWS);
-                float wrapedNdotL = (dot(i.normal, L) + w) / ((1 + w) * (1 + w));
-
-                col *= saturate(wrapedNdotL);
-
                 float3 unL     = -lightToSample;
-                float  distSq  = dot(unL, unL);
-                // float distSq   =  Sq(sdCapsule(i.positionWS, p0, p1, 0));
+                // float  distSq  = dot(unL, unL);
+                float distSq   =  sdLineSq(positionWS, p0, p1);
                 // float distSq   =  Sq(sdTorus(i.positionWS - _LightPosition, 2));
                 // float distSq   =  Sq(sdCross(i.positionWS - _LightPosition, 0));
                 float  distRcp = rsqrt(distSq);
@@ -196,10 +175,52 @@ Shader "Custom/LineLight"
                 float angleScale = 0.0f;
                 float angleOffset = 1.0f;
 
-                col *= PunctualLightAttenuation(distances, scale, bias, angleScale, angleOffset);
-                col *= _Luminance;
+                return PunctualLightAttenuation(distances, scale, bias, angleScale, angleOffset);
+            }
 
-                return float4(col.xyz, 1);
+            float LineNdotL(float3 N, float3 lightToSample)
+            {
+                // Energy conserving wrapped diffuse: http://blog.stevemcauley.com/2011/12/03/energy-conserving-wrapped-diffuse/
+                float w = 0;//SphericalLine(p0, p1);
+                float3 L = normalize(-lightToSample);
+                float wrappedNdotL = (dot(N, L) + w) / ((1 + w) * (1 + w));
+
+                return saturate(wrappedNdotL);
+            }
+
+            float3 GetClosestPointSdLine(float3 positionWS, float3 p0, float3 p1)
+            {
+                float sqT = 0;
+                float oldSqT = 1e20;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    sqT = sdLineSq(positionWS, p0, p1);
+                    positionWS += sqT;
+                    if (sqT > oldSqT)
+                        break ;
+                    oldSqT = sqT;
+                }
+            }
+
+            fixed4 frag (v2f i) : SV_Target
+            {
+                i.normal = normalize(i.normal);
+                fixed3 diffuse = tex2D(_MainTex, i.uv) * _Color;
+
+                float halfLength = _Length * 0.5;
+                float3 p0 = _LightPosition - _LightRight * halfLength;
+                float3 p1 = _LightPosition + _LightRight * halfLength;
+
+                float3 lightPosition = GetNearestPointSegment(p0, p1, i.positionWS);
+                float3 lightToSample = i.positionWS - lightPosition;
+
+                diffuse *= LineNdotL(i.normal, lightToSample);
+
+                diffuse *= EvalutePunctualLightAttenuation(lightToSample, i.positionWS, p0, p1);
+                diffuse *= _Luminance;
+
+                return float4(diffuse, 1);
             }
             ENDCG
         }
