@@ -12,7 +12,8 @@ public class LineLight : MonoBehaviour
     public Material lineMaterial;
 
     [Header("Debug")]
-    public Vector3  targetPoint;
+    public Vector3      targetPoint;
+    public Quaternion   targetDirection;
 
     public Vector3  p0 { get; private set; }
     public Vector3  p1 { get; private set; }

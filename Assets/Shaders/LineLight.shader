@@ -49,6 +49,8 @@ Shader "Custom/LineLight"
             float _Luminance;
             float _Length;
 
+            #define PI 3.14159265
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -203,6 +205,23 @@ Shader "Custom/LineLight"
                 }
             }
 
+            float F_Schlick(float f0, float u)
+            {
+                float x = 1.0 - u;
+                float x2 = x * x;
+                float x5 = x * x2 * x2;
+                return (1 - f0) * x5 + f0;
+            }
+
+            void BSDF(out float diffuseBSDF, out float specularBSDF)
+            {
+                diffuseBSDF = 1.0 / PI;
+
+                float LdotH = 0;
+
+                specularBSDF = F_Schlick(_Smoothness, LdotH);
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
                 i.normal = normalize(i.normal);
@@ -215,10 +234,17 @@ Shader "Custom/LineLight"
                 float3 lightPosition = GetNearestPointSegment(p0, p1, i.positionWS);
                 float3 lightToSample = i.positionWS - lightPosition;
 
-                diffuse *= LineNdotL(i.normal, lightToSample);
+                float diffuseBSDF, specularBSDF;
+                BSDF(diffuseBSDF, specularBSDF);
 
-                diffuse *= EvalutePunctualLightAttenuation(lightToSample, i.positionWS, p0, p1);
+                float intensity = LineNdotL(i.normal, lightToSample);
+                intensity *= EvalutePunctualLightAttenuation(lightToSample, i.positionWS, p0, p1);
+
+                diffuse *= diffuseBSDF * intensity;
+
                 diffuse *= _Luminance;
+
+                //TODO: specular
 
                 return float4(diffuse, 1);
             }
