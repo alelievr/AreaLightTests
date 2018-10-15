@@ -13,7 +13,7 @@ public class LineLight : MonoBehaviour
 
     [Header("Debug")]
     public Vector3      targetPoint;
-    public Quaternion   targetDirection;
+    public Quaternion   targetDirection = Quaternion.identity;
 
     public Vector3  p0 { get; private set; }
     public Vector3  p1 { get; private set; }

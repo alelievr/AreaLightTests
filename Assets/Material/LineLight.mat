@@ -5,7 +5,8 @@ Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: LineLight
   m_Shader: {fileID: 4800000, guid: 97be9690b1b64104d908331ea981ea43, type: 3}
   m_ShaderKeywords: 
@@ -75,7 +76,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LightForward: {r: -0, g: 0, b: 1, a: 0}
-    - _LightPosition: {r: -35.608696, g: 1.8900003, b: -0.3199997, a: 0}
-    - _LightRight: {r: 1, g: 0, b: 0, a: 0}
-    - _LightUp: {r: 0, g: 1, b: 0, a: 0}
+    - _LightForward: {r: 0.955022, g: 0.107515976, b: 0.2763571, a: 0}
+    - _LightPosition: {r: -34.968, g: 1.8636999, b: -1.5236053, a: 0}
+    - _LightRight: {r: 0.29653487, g: -0.34626636, b: -0.8900374, a: 0}
+    - _LightUp: {r: -0.00000008940697, g: 0.93195486, b: -0.36257422, a: 0}
