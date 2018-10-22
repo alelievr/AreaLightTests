@@ -27,6 +27,7 @@ public class LineLight : MonoBehaviour
         lineMaterial.SetFloat("_Luminance", luminance);
         lineMaterial.SetFloat("_Range", range * transform.localScale.x);
         lineMaterial.SetFloat("_Length", length * transform.localScale.x);
+        lineMaterial.SetMatrix("_LightModelMatrix", transform.localToWorldMatrix.inverse);
     }
 
     private void OnDrawGizmos()

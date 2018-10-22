@@ -47,8 +47,6 @@ Shader "Custom/LineLight"
 
             struct LightRaymarchResult
             {
-                float forwardDistance;
-                float backDistance;
                 float3 center;
                 float delta;
             };
@@ -59,6 +57,7 @@ Shader "Custom/LineLight"
             float _Smoothness;
 
             float3 _LightPosition;
+            float4x4 _LightModelMatrix;
             float3 _LightRight;
             float3 _LightUp;
             float4 _LightForward;
@@ -205,22 +204,17 @@ Shader "Custom/LineLight"
 
             float sdTorus(float3 p, RaymarchData data)
             {
-                p -= _LightPosition;
                 float2 q = float2(length(p.xz) - _Range, p.y);
                 return length(q);
             }
 
-            float sdLine(float3 p, RaymarchData data)
+            float sdAALine(float3 p, RaymarchData data)
             {
-                float3 pa = p - data.p0, ba = data.p1 - data.p0;
-                float h = saturate(dot(pa,ba)/dot(ba,ba));
-                float3 t = (pa - ba * h);
-                return length(pa - ba * h);
+                return length(max(abs(p) - float3(_Length / 2.0, 0, 0), 0.0));
             }
 
             float sdCross(float3 p, float t)
             {
-                p -= _LightPosition;
                 return abs(p.x) + abs(p.y) + abs(p.z) - t;
             }
 
@@ -246,7 +240,7 @@ Shader "Custom/LineLight"
                         float3 d = a + _LightForward * _Range;
                         return sdQuad(p, a, b, c, d);
                     default:
-                        return sdLine(p, data);
+                        return sdAALine(p, data);
                 }
             }
 
@@ -259,27 +253,25 @@ Shader "Custom/LineLight"
                 float3  oldPosition;
                 float   oldDistance;
 
-                for (uint i = 0; i < 6; i++)
+                for (uint i = 0; i < 3; i++)
                 {
                     oldPosition = p;
                     oldDistance = distance;
 
                     p = startPoint + direction * t;
                     distance = sdLight(p, data);
-                    if (oldDistance <= distance)
-                        break ;
+                    // if (oldDistance <= distance)
+                        // break ;
                     t += distance;
                 }
 
-                results.forwardDistance = distance;
-                results.backDistance = oldDistance;
                 results.center = oldPosition + (p - oldPosition) * 0.5;
                 return results;
             }
 
-            float3 ConstructLightPosition(v2f i, RaymarchData data)
+            float3 ConstructLightPosition(float3 positionLS, float3 normalLS, RaymarchData data)
             {
-                LightRaymarchResult results = RaymarchToLight(i.positionWS, i.normalWS, data);
+                LightRaymarchResult results = RaymarchToLight(positionLS, normalLS, data);
                 float2 delta = float2(0.01, 0);
 
                 float3 lightDirection = normalize(float3(
@@ -314,8 +306,8 @@ Shader "Custom/LineLight"
                 fixed3 diffuse = tex2D(_MainTex, i.uv) * _Color;
 
                 float halfLength = _Length * 0.5;
-                float3 p0 = _LightPosition - _LightRight * halfLength;
-                float3 p1 = _LightPosition + _LightRight * halfLength;
+                float3 p0 = float3(-halfLength, 0, 0);
+                float3 p1 = float3(halfLength, 0, 0);
 
                 RaymarchData data;
 
@@ -323,23 +315,17 @@ Shader "Custom/LineLight"
                 data.p0 = p0;
                 data.p1 = p1;
 
-                float3 lightPosition = ConstructLightPosition(i, data);
-                // float3 lightPosition = GetNearestPointSegment(p0, p1, i.positionWS);
-                // return float4(lightPosition * 0.5 + 0.5, 1);
-                float3 lightToSample = i.positionWS - lightPosition;
-                // return normalize(lightPosition).xyzx * 0.5 + 0.5;
-                // return normalize(lightToSample).xyzx * 0.5 + 0.5;
-                // return saturate(dot(i.normalWS, normalize(lightToSample)));
+                float3 positionLS = mul(_LightModelMatrix, i.positionWS - _LightPosition);
+                float3 normalLS = mul(_LightModelMatrix, i.normalWS);
+
+                float3 lightPosition = ConstructLightPosition(positionLS, normalLS, data);
+                float3 lightToSample = positionLS - lightPosition;
 
                 float diffuseBSDF, specularBSDF;
                 BSDF(diffuseBSDF, specularBSDF);
 
-                // return float4(i.normalWS * 0.5 + 0.5, 1);
-                // return float4(normalize(-lightToSample) * 0.5 + 0.5, 1);
-                // return length(lightToSample).xxxx / 10;
-
-                float intensity = saturate(dot(i.normalWS, normalize(-lightToSample)));
-                intensity *= EvalutePunctualLightAttenuation(i.positionWS, data);
+                float intensity = saturate(dot(normalLS, normalize(-lightToSample)));
+                intensity *= EvalutePunctualLightAttenuation(positionLS, data);
 
                 diffuse *= diffuseBSDF * intensity;
                 diffuse *= _Luminance;
