@@ -85,10 +85,7 @@ public class LineLightEditor : Editor
     {
         Vector3 normal = line.targetDirection * Vector3.forward;
         Vector3 p = line.targetPoint;
-        float t = 0.001f;
         Vector3 lastPosition = line.targetPoint;
-        float distance = 0;
-        float oldDistance = 1e20f;
 
         float halfLength = line.length / 2;
         Vector3 p0 = line.transform.position - line.transform.right * halfLength;
@@ -100,37 +97,19 @@ public class LineLightEditor : Editor
         float tPointDistance = LineSDF(tPoint, p0, p1);
         Handles.Label(tPoint, tPointDistance.ToString());
 
+        Vector3 center = tPoint + normal * tPointDistance;
+
         Handles.color = Color.blue;
-        for (int i = 0; i < 4; i++)
-        {
-            lastPosition = p;
-            oldDistance = distance;
-            p = line.targetPoint + normal * t;
-            distance = LineSDF(p, p0, p1);
-            Handles.color += Color.red * 0.1f;
-            Handles.SphereHandleCap(0, p, Quaternion.identity, .02f, EventType.Repaint);
-            Handles.Label(p, t.ToString());
-            t += distance;
-        }
-
-        // TODO: compute the closest point in the direction of the sdf using p and lastPosition, t and oldT
-
-        Vector3 t0 = p;
-        Vector3 t1 = lastPosition;
-        float s = Vector3.Distance(t0, t1) / 2;
-        Vector3 t2 = tangent * s + t1;
-        Vector3 center = t1 + (t0 - t1) / 2;
-
         Handles.SphereHandleCap(0, center, Quaternion.identity, .2f, EventType.Repaint);
 
-        Vector3 reconstructedUp = Vector3.Cross(normal, tangent);
+        float delta = 0.1f;
 
-        Vector3 m0 = center + s * normal;
-        Vector3 m1 = center - s * normal;
-        Vector3 m2 = center + s * tangent;
-        Vector3 m3 = center - s * tangent;
-        Vector3 m4 = center + s * reconstructedUp;
-        Vector3 m5 = center - s * reconstructedUp;
+        Vector3 m0 = center + Vector3.right * delta;
+        Vector3 m1 = center - Vector3.right * delta;
+        Vector3 m2 = center + Vector3.up * delta;
+        Vector3 m3 = center - Vector3.up * delta;
+        Vector3 m4 = center + Vector3.forward * delta;
+        Vector3 m5 = center - Vector3.forward * delta;
         
         Handles.color = new Color(1, 0.5f, 0, 1);
         Handles.SphereHandleCap(0, m0, Quaternion.identity, .1f, EventType.Repaint);
@@ -139,24 +118,22 @@ public class LineLightEditor : Editor
         Handles.SphereHandleCap(0, m3, Quaternion.identity, .1f, EventType.Repaint);
         Handles.SphereHandleCap(0, m4, Quaternion.identity, .1f, EventType.Repaint);
         Handles.SphereHandleCap(0, m5, Quaternion.identity, .1f, EventType.Repaint);
-        
-        Vector3 reconstructedNormal = -Vector3.Normalize(
-            normal * (distance - oldDistance) +
-            tangent * (LineSDF(m2, p0, p1) - LineSDF(m3, p0, p1)) +
-            reconstructedUp * (LineSDF(m4, p0, p1) - LineSDF(m5, p0, p1))
-        );
 
-        Vector3 finalPoint = center + reconstructedNormal * LineSDF(center, p0, p1);
+        float c = LineSDF(center, p0, p1);
+        
+        Vector3 lightDirection = Vector3.Normalize(new Vector3(
+            c - LineSDF(m1, p0, p1),
+            c - LineSDF(m3, p0, p1),
+            c - LineSDF(m5, p0, p1)
+        ));
+
+        Vector3 finalPoint = center - lightDirection * c;
 
         Handles.color = Color.black;
         Handles.SphereHandleCap(0, finalPoint, Quaternion.identity, .1f, EventType.Repaint);
 
         Handles.color = Color.cyan;
-        Handles.ArrowHandleCap(0, t1, Quaternion.LookRotation(tangent), 0.1f, EventType.Repaint);
-        Handles.color += Color.red * 0.4f;
-        Handles.ArrowHandleCap(0, t1, Quaternion.LookRotation(reconstructedUp), 0.1f, EventType.Repaint);
-        Handles.color += Color.red * 0.4f;
-        Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(reconstructedNormal), 0.5f, EventType.Repaint);
+        Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(-lightDirection), c, EventType.Repaint);
 
         Handles.color = Color.yellow;
         Handles.DrawDottedLine(line.targetPoint, p, 5f);

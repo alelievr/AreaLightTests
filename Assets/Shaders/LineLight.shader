@@ -20,6 +20,7 @@ Shader "Custom/LineLight"
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            #include "UnityStandardBRDF.cginc"
 
             struct appdata
             {
@@ -48,7 +49,7 @@ Shader "Custom/LineLight"
             struct LightRaymarchResult
             {
                 float3 center;
-                float delta;
+                float distance;
             };
 
             sampler2D _MainTex;
@@ -64,6 +65,10 @@ Shader "Custom/LineLight"
             float _Range;
             float _Luminance;
             float _Length;
+            float _Width;
+            int _LightMode;
+            int _AffectDiffuse;
+            int _AffectSpecular;
 
             #define PI 3.14159265
 
@@ -71,9 +76,9 @@ Shader "Custom/LineLight"
             {
                 v2f o;
                 o.positionNDC = UnityObjectToClipPos(v.vertex);
-                o.positionWS = mul (unity_ObjectToWorld, v.vertex).xyz;
+                o.positionWS = mul(unity_ObjectToWorld, v.vertex).xyz;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                o.normalWS = mul(unity_ObjectToWorld, float4(v.normal, 0));
+                o.normalWS = UnityObjectToWorldNormal(v.normal);
                 o.tangentWS = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
                 return o;
             }
@@ -116,10 +121,9 @@ Shader "Custom/LineLight"
                 return Sq(attenuation);
             }
             
-            float sdLight(float3 p, RaymarchData data);
-            float EvalutePunctualLightAttenuation(float3 positionWS, RaymarchData data)
+            float EvalutePunctualLightAttenuation(float3 positionWS, float lightDistance)
             {
-                float  dist   =  sdLight(positionWS, data);
+                float  dist   =  lightDistance;
                 float  distSq    = dist * dist;
                 float  distRcp = rcp(dist);
 
@@ -146,29 +150,6 @@ Shader "Custom/LineLight"
                 return saturate(wrappedNdotL);
             }
 
-            // Distance of point from line:
-            float3 GetNearestPointLine(float3 a, float3 b, float3 p)
-            {
-                float3 n = b - a;
-                float3 pa = a - p;
-                float n2 = dot(n, n);
-                float abd = dot(pa, n);
-                float t = abd / n2;
-
-                return a - n * t;
-            }
-
-            // Distance of point from segment:
-            float3 GetNearestPointSegment(float3 a, float3 b, float3 p)
-            {
-                if (dot((a - b), (a - p)) < 0)
-                    return a;
-                else if (dot((b - a), (b - p)) < 0)
-                    return b;
-                else
-                    return GetNearestPointLine(a, b, p);
-            }
-            
             float star(float3 v)
             {
                 float r = 1.5 + 0.5 * cos(atan2(v.y, v.x) * 5.0 + PI / 2.0);
@@ -177,9 +158,10 @@ Shader "Custom/LineLight"
                 return r;
             }
 
+
             // SDF from: http://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm
             float dot2( in float3 v ) { return dot(v,v); }
-            float sdQuad( float3 p, float3 a, float3 b, float3 c, float3 d )
+            float sdQuadSq( float3 p, float3 a, float3 b, float3 c, float3 d )
             {
                 float3 ba = b - a; float3 pa = p - a;
                 float3 cb = c - b; float3 pb = p - b;
@@ -187,7 +169,7 @@ Shader "Custom/LineLight"
                 float3 ad = a - d; float3 pd = p - d;
                 float3 nor = cross( ba, ad );
 
-                return sqrt(
+                return (
                 (sign(dot(cross(ba,nor),pa)) +
                 sign(dot(cross(cb,nor),pb)) +
                 sign(dot(cross(dc,nor),pc)) +
@@ -201,86 +183,87 @@ Shader "Custom/LineLight"
                 :
                 dot(nor,pa)*dot(nor,pa)/dot2(nor) );
             }
+            
+            float sdBoxSq(float3 p, float3 b)
+            {
+                return dot2(max(abs(p)-b,0.0));
+            }
 
-            float sdTorus(float3 p, RaymarchData data)
+            float sdTorusSq(float3 p, RaymarchData data)
             {
                 float2 q = float2(length(p.xz) - _Range, p.y);
-                return length(q);
+                return dot(q, q);
             }
 
-            float sdAALine(float3 p, RaymarchData data)
+            float sdAALineSq(float3 p, RaymarchData data)
             {
-                return length(max(abs(p) - float3(_Length / 2.0, 0, 0), 0.0));
+                return dot2(max(abs(p) - float3(_Length / 2.0, 0, 0), 0.0));
             }
 
-            float sdCross(float3 p, float t)
+            float sdCrossSq(float3 p, float t)
             {
-                return abs(p.x) + abs(p.y) + abs(p.z) - t;
+                float d = abs(p.x) + abs(p.y) + abs(p.z) - t;
+                return d * d;
+            }
+
+            float sdRectSq(float3 p, float2 size)
+            {
+                float3 f = abs(p) - float3(size.x, 0, size.y);
+                float d_box = dot2(max(f, 0.0));
+
+                return d_box;
+
+                float a = abs(1.0 / size.x);
+                a = a*a*a*a*a*a*a*a*a;
+
+                return d_box + (a / max(1.0, p.y));
+                
+                d_box += a / p.y;
+                
+                return d_box;
             }
 
             #define CROSS       0
             #define TORUS       1
             #define QUAD        2
             #define DEFAULT     -1
-            
-            #define SDF DEFAULT
 
-            float sdLight(float3 p, RaymarchData data)
+            float sdLightSq(float3 p, RaymarchData data)
             {
-                switch (SDF)
+                switch (_LightMode)
                 {
                     case TORUS:
-                        return sdTorus(p, data);
+                        return sdTorusSq(p, data);
                     case CROSS:
-                        return sdCross(p, 0.2);
+                        return sdCrossSq(p, 0.2);
                     case QUAD:
+                        // TODO: replace by a sdbox
                         float3 a = data.p0;
                         float3 b = data.p1;
                         float3 c = b + _LightForward * _Range;
                         float3 d = a + _LightForward * _Range;
-                        return sdQuad(p, a, b, c, d);
+                        // return sdBoxSq(p, float3(_Length / 2, 0, _Width / 2));
+                        return sdRectSq(p, float2(_Length / 2, _Width / 2));
                     default:
-                        return sdAALine(p, data);
+                        return sdAALineSq(p, data);
                 }
             }
 
-            LightRaymarchResult RaymarchToLight(float3 p, float3 direction, RaymarchData data)
+            float3 ConstructLightPosition(float3 positionLS, float3 normalLS, RaymarchData data, out float lightDistance)
             {
-                LightRaymarchResult results;
-                float   t = 0.001;
-                float3  startPoint = p;
-                float   distance = 0;
-                float3  oldPosition;
-                float   oldDistance;
-
-                for (uint i = 0; i < 3; i++)
-                {
-                    oldPosition = p;
-                    oldDistance = distance;
-
-                    p = startPoint + direction * t;
-                    distance = sdLight(p, data);
-                    // if (oldDistance <= distance)
-                        // break ;
-                    t += distance;
-                }
-
-                results.center = oldPosition + (p - oldPosition) * 0.5;
-                return results;
-            }
-
-            float3 ConstructLightPosition(float3 positionLS, float3 normalLS, RaymarchData data)
-            {
-                LightRaymarchResult results = RaymarchToLight(positionLS, normalLS, data);
+                lightDistance = sqrt(sdLightSq(positionLS, data));
+                float3 p = positionLS + normalLS * lightDistance;
+                float distSq = sdLightSq(p, data);
                 float2 delta = float2(0.01, 0);
 
+                // light direction from sdf normal approximation
                 float3 lightDirection = normalize(float3(
-                    sdLight(results.center + delta.xyy, data) - sdLight(results.center - delta.xyy, data),
-                    sdLight(results.center + delta.yxy, data) - sdLight(results.center - delta.yxy, data),
-                    sdLight(results.center + delta.yyx, data) - sdLight(results.center - delta.yyx, data)
+                    distSq - sdLightSq(p - delta.xyy, data),
+                    distSq - sdLightSq(p - delta.yxy, data),
+                    distSq - sdLightSq(p - delta.yyx, data)
                 ));
 
-                return results.center - lightDirection * sdLight(results.center, data);
+                return p - lightDirection * sqrt(distSq);
             }
 
             float F_Schlick(float f0, float u)
@@ -291,19 +274,28 @@ Shader "Custom/LineLight"
                 return (1 - f0) * x5 + f0;
             }
 
-            void BSDF(out float diffuseBSDF, out float specularBSDF)
+            void BSDF(v2f i, float3 lightDirection, out float diffuseBSDF, out float specularBSDF)
             {
                 diffuseBSDF = 1.0 / PI;
 
                 float LdotH = 0;
 
-                specularBSDF = F_Schlick(_Smoothness, LdotH);
+                float3 viewDir = normalize(_WorldSpaceCameraPos - i.positionWS);
+                float3 halfVector = normalize(-lightDirection + viewDir);
+
+                specularBSDF = pow(DotClamped(halfVector, i.normalWS), _Smoothness * 100);
+
+                if (!_AffectDiffuse)
+                    diffuseBSDF = 0;
+                if (!_AffectSpecular)
+                    specularBSDF = 0;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
                 i.normalWS = normalize(i.normalWS);
                 fixed3 diffuse = tex2D(_MainTex, i.uv) * _Color;
+                float3 specular = float3(1, 1, 1); // white specular color
 
                 float halfLength = _Length * 0.5;
                 float3 p0 = float3(-halfLength, 0, 0);
@@ -318,21 +310,35 @@ Shader "Custom/LineLight"
                 float3 positionLS = mul(_LightModelMatrix, i.positionWS - _LightPosition);
                 float3 normalLS = mul(_LightModelMatrix, i.normalWS);
 
-                float3 lightPosition = ConstructLightPosition(positionLS, normalLS, data);
+                float lightDistance;
+                float3 lightPosition = ConstructLightPosition(positionLS, normalLS, data, lightDistance);
                 float3 lightToSample = positionLS - lightPosition;
 
+                float3 viewDir = normalize(_WorldSpaceCameraPos - i.positionWS);
+                float3 specularDirection = reflect(viewDir, i.normalWS);
+
+                float3 specularDirectionLS = mul(_LightModelMatrix, specularDirection);
+
+                float3 specularLightPosition = ConstructLightPosition(positionLS, specularDirectionLS, data, lightDistance);
+                float3 specularLightDirection = normalize(positionLS - specularLightPosition);
+
                 float diffuseBSDF, specularBSDF;
-                BSDF(diffuseBSDF, specularBSDF);
+                BSDF(i, specularLightDirection, diffuseBSDF, specularBSDF);
+
+                if (_LightMode == QUAD)
+                {
+                    diffuseBSDF *= step(positionLS.y, 0);
+                }
 
                 float intensity = saturate(dot(normalLS, normalize(-lightToSample)));
-                intensity *= EvalutePunctualLightAttenuation(positionLS, data);
+                intensity *= EvalutePunctualLightAttenuation(positionLS, lightDistance);
 
                 diffuse *= diffuseBSDF * intensity;
                 diffuse *= _Luminance;
 
-                //TODO: specular
+                specular *= specularBSDF;
 
-                return float4(diffuse, 1);
+                return float4(diffuse + specular, 1);
             }
             ENDCG
         }
