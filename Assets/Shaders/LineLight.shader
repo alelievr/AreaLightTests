@@ -104,24 +104,29 @@ Shader "Custom/LineLight"
 
             #define PUNCTUAL_LIGHT_THRESHOLD 0.01 // 1cm (in Unity 1 is 1m)
 
+            float AngleAttenuation(float cosFwd, float lightAngleScale, float lightAngleOffset)
+            {
+                return saturate(cosFwd * lightAngleScale + lightAngleOffset);
+            }
 
             // Combines SmoothWindowedDistanceAttenuation() and SmoothAngleAttenuation() in an efficient manner.
             // distances = {d, d^2, 1/d, 0}
-            float PunctualLightAttenuation(float4 distances, float rangeAttenuationScale, float rangeAttenuationBias)
+            float PunctualLightAttenuation(float4 distances, float rangeAttenuationScale, float rangeAttenuationBias, float lightAngleScale, float lightAngleOffset)
             {
                 float distSq   = distances.y;
                 float distRcp  = distances.z;
+                float cosFwd   = distances.w * distRcp;
 
                 float attenuation = min(distRcp, 1.0 / PUNCTUAL_LIGHT_THRESHOLD);
                 attenuation *= DistanceWindowing(distSq, rangeAttenuationScale, rangeAttenuationBias);
                 // For point light model, we don't need angle attenuation
-                // attenuation *= AngleAttenuation(cosFwd, lightAngleScale, lightAngleOffset);
+                attenuation *= AngleAttenuation(cosFwd, lightAngleScale, lightAngleOffset);
 
                 // Effectively results in SmoothWindowedDistanceAttenuation(...) * SmoothAngleAttenuation(...).
                 return Sq(attenuation);
             }
             
-            float EvalutePunctualLightAttenuation(float3 positionWS, float lightDistance)
+            float EvalutePunctualLightAttenuation(float3 lightToSample, float3 positionWS, float lightDistance)
             {
                 float  dist   =  lightDistance;
                 float  distSq    = dist * dist;
@@ -131,23 +136,61 @@ Shader "Custom/LineLight"
                     dist,
                     distSq,
                     distRcp,
-                    0
+                    dot(lightToSample, _LightForward)
                 );
 
                 float scale = 1.0f / (_Range * _Range);
                 float bias  = 1.0f;
+                float angleScale = 0.0f;
+                float angleOffset = 1.0f;
 
-                return PunctualLightAttenuation(distances, scale, bias);
+                return PunctualLightAttenuation(distances, scale, bias, angleScale, angleOffset);
             }
 
-            float ComputeWrapLighting(float3 N, float3 lightToSample)
+            float FastACosPos(float inX)
+            {
+                float x = abs(inX);
+                float res = (0.0468878 * x + -0.203471) * x + 1.570796; // p(x)
+                res *= sqrt(1.0 - x);
+
+                return res;
+            }
+
+            // Ref: https://seblagarde.wordpress.com/2014/12/01/inverse-trigonometric-functions-gpu-optimization-for-amd-gcn-architecture/
+            // Input [-1, 1] and output [0, PI]
+            // 12 VALU
+            float FastACos(float inX)
+            {
+                float res = FastACosPos(inX);
+
+                return (inX >= 0) ? res : PI - res; // Undo range reduction
+            }
+
+            // Reference: An Area - Preserving Parametrization for Spherical Rectangles  (section 4.2)
+            float RectangleSolidAngle(float3 worldPos, float3  p0, float3 p1, float3 p2, float3 p3)
+            {
+                float3 v0 = p0 - worldPos;
+                float3 v1 = p1 - worldPos;
+                float3 v2 = p2 - worldPos;
+                float3 v3 = p3 - worldPos;
+
+                float3 n0 = normalize(cross(v0, v1));
+                float3 n1 = normalize(cross(v1, v2));
+                float3 n2 = normalize(cross(v2, v3));
+                float3 n3 = normalize(cross(v3, v0));
+
+                float g0 = FastACos(dot(-n0, n1));
+                float g1 = FastACos(dot(-n1, n2));
+                float g2 = FastACos(dot(-n2, n3));
+                float g3 = FastACos(dot(-n3, n0));
+
+                return g0 + g1 + g2 + g3 - 2.0f * PI;
+            }
+
+            float ComputeWrapLighting(float3 N, float3 L, float w)
             {
                 // Energy conserving wrapped diffuse: http://blog.stevemcauley.com/2011/12/03/energy-conserving-wrapped-diffuse/
-                float w = 0;//SphericalLine(p0, p1);
-                float3 L = normalize(-lightToSample);
-                float wrappedNdotL = (dot(N, L) + w) / ((1 + w) * (1 + w));
-
-                return saturate(wrappedNdotL);
+                return saturate((dot(N, L) + w) / ((1 + w) * (1 + w)));
             }
 
             float star(float3 v)
@@ -158,32 +201,17 @@ Shader "Custom/LineLight"
                 return r;
             }
 
-
-            // SDF from: http://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm
-            float dot2( in float3 v ) { return dot(v,v); }
-            float sdQuadSq( float3 p, float3 a, float3 b, float3 c, float3 d )
+            float dot2( in float3 v )
             {
-                float3 ba = b - a; float3 pa = p - a;
-                float3 cb = c - b; float3 pb = p - b;
-                float3 dc = d - c; float3 pc = p - c;
-                float3 ad = a - d; float3 pd = p - d;
-                float3 nor = cross( ba, ad );
+                return dot(v,v);
+            }
 
-                return (
-                (sign(dot(cross(ba,nor),pa)) +
-                sign(dot(cross(cb,nor),pb)) +
-                sign(dot(cross(dc,nor),pc)) +
-                sign(dot(cross(ad,nor),pd))<3.0)
-                ?
-                min( min( min(
-                dot2(ba*clamp(dot(ba,pa)/dot2(ba),0.0,1.0)-pa),
-                dot2(cb*clamp(dot(cb,pb)/dot2(cb),0.0,1.0)-pb) ),
-                dot2(dc*clamp(dot(dc,pc)/dot2(dc),0.0,1.0)-pc) ),
-                dot2(ad*clamp(dot(ad,pd)/dot2(ad),0.0,1.0)-pd) )
-                :
-                dot(nor,pa)*dot(nor,pa)/dot2(nor) );
+            float dot2( in float2 v )
+            {
+                return dot(v,v);
             }
             
+            // SDF from: http://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm
             float sdBoxSq(float3 p, float3 b)
             {
                 return dot2(max(abs(p)-b,0.0));
@@ -209,18 +237,7 @@ Shader "Custom/LineLight"
             float sdRectSq(float3 p, float2 size)
             {
                 float3 f = abs(p) - float3(size.x, 0, size.y);
-                float d_box = dot2(max(f, 0.0));
-
-                return d_box;
-
-                float a = abs(1.0 / size.x);
-                a = a*a*a*a*a*a*a*a*a;
-
-                return d_box + (a / max(1.0, p.y));
-                
-                d_box += a / p.y;
-                
-                return d_box;
+                return dot2(max(f, 0));
             }
 
             #define CROSS       0
@@ -237,12 +254,6 @@ Shader "Custom/LineLight"
                     case CROSS:
                         return sdCrossSq(p, 0.2);
                     case QUAD:
-                        // TODO: replace by a sdbox
-                        float3 a = data.p0;
-                        float3 b = data.p1;
-                        float3 c = b + _LightForward * _Range;
-                        float3 d = a + _LightForward * _Range;
-                        // return sdBoxSq(p, float3(_Length / 2, 0, _Width / 2));
                         return sdRectSq(p, float2(_Length / 2, _Width / 2));
                     default:
                         return sdAALineSq(p, data);
@@ -264,14 +275,6 @@ Shader "Custom/LineLight"
                 ));
 
                 return p - lightDirection * sqrt(distSq);
-            }
-
-            float F_Schlick(float f0, float u)
-            {
-                float x = 1.0 - u;
-                float x2 = x * x;
-                float x5 = x * x2 * x2;
-                return (1 - f0) * x5 + f0;
             }
 
             void BSDF(v2f i, float3 lightDirection, out float diffuseBSDF, out float specularBSDF)
@@ -296,16 +299,12 @@ Shader "Custom/LineLight"
                 i.normalWS = normalize(i.normalWS);
                 fixed3 diffuse = tex2D(_MainTex, i.uv) * _Color;
                 float3 specular = float3(1, 1, 1); // white specular color
-
-                float halfLength = _Length * 0.5;
-                float3 p0 = float3(-halfLength, 0, 0);
-                float3 p1 = float3(halfLength, 0, 0);
-
                 RaymarchData data;
 
+                float halfLength = _Length * 0.5;
+                data.p0 = float3(-halfLength, 0, 0);
+                data.p1 = float3(halfLength, 0, 0);
                 data.radius = 0.5;
-                data.p0 = p0;
-                data.p1 = p1;
 
                 float3 positionLS = mul(_LightModelMatrix, i.positionWS - _LightPosition);
                 float3 normalLS = mul(_LightModelMatrix, i.normalWS);
@@ -325,13 +324,17 @@ Shader "Custom/LineLight"
                 float diffuseBSDF, specularBSDF;
                 BSDF(i, specularLightDirection, diffuseBSDF, specularBSDF);
 
+                float NdotL = 0;
+
+                NdotL = ComputeWrapLighting(normalLS, normalize(-lightToSample), 0.2);
+
                 if (_LightMode == QUAD)
                 {
-                    diffuseBSDF *= step(positionLS.y, 0);
+                    float f = saturate(-positionLS.y);
+                    diffuseBSDF *= f;
                 }
 
-                float intensity = saturate(dot(normalLS, normalize(-lightToSample)));
-                intensity *= EvalutePunctualLightAttenuation(positionLS, lightDistance);
+                float intensity = NdotL * EvalutePunctualLightAttenuation(lightToSample, positionLS, lightDistance);
 
                 diffuse *= diffuseBSDF * intensity;
                 diffuse *= _Luminance;

@@ -25,7 +25,7 @@ public class LineLightEditor : Editor
     {
         Vector3 n = b - a;
         Vector3 pa = a - p;
-        Vector3 c = n * (Vector3.Dot( pa, n ) / Vector3.Dot( n, n ));
+        Vector3 c = n * (Vector3.Dot(pa, n) / Vector3.Dot(n, n));
         Vector3 d = pa - c;
 
         float n2 = Vector3.Dot(n, n);
@@ -73,7 +73,65 @@ public class LineLightEditor : Editor
         Handles.Label(line.targetPoint, d.ToString());
     }
 
-    float LineSDF(Vector3 p, Vector3 a, Vector3 b)
+    float dot2( Vector3 v )
+    {
+        return Vector3.Dot(v,v);
+    }
+
+
+    float dot2( Vector2 v )
+    {
+        return Vector2.Dot(v,v);
+    }
+
+    Vector3 abs(Vector3 v)
+    {
+        v.x = Mathf.Abs(v.x);
+        v.y = Mathf.Abs(v.y);
+        v.z = Mathf.Abs(v.z);
+
+        return v;
+    }
+
+    float sdRectSq(Vector3 p, Vector2 size)
+    {
+        Vector3 f = abs(p) - new Vector3(size.x, 0, size.y);
+        float d_box = dot2(Vector3.Max(f, Vector3.zero));
+
+        float a = Mathf.Abs(dot2(p) / dot2(size));
+        a = a*a;
+        
+        // d_box += Sq(Sq(a) / abs(p.y));
+
+        // float smoothPlane = -p.y;
+
+        // d_box += length(p.xz) * 1 / abs(p.y);
+        
+        // return min(d_box, smoothPlane);
+        return d_box;
+    }
+
+
+    float sdAALineSq(Vector3 p)
+    {
+        return dot2(Vector3.Max(abs(p) - new Vector3(line.length / 2.0f, 0, 0), Vector3.zero));
+    }
+
+    float sdLightSq(Vector3 p)
+    {
+        p -= line.transform.position;
+        p = line.transform.localToWorldMatrix * p;
+        switch (line.mode)
+        {
+            case LineLight.LightMode.Quad:
+                // TODO: replace by a sdbox
+                return sdRectSq(p, new Vector2(line.length / 2, line.width / 2));
+            default:
+                return sdAALineSq(p);
+        }
+    }
+
+    float LightSDF(Vector3 p, Vector3 a, Vector3 b)
     {
         Vector3 pa = p - a, ba = b - a;
         float h = Mathf.Clamp01(Vector3.Dot(pa,ba) / Vector3.Dot(ba,ba));
@@ -83,18 +141,16 @@ public class LineLightEditor : Editor
     
     void DrawRaymarchDebug()
     {
-        Vector3 normal = line.targetDirection * Vector3.forward;
+        Vector3 normal = line.transform.localToWorldMatrix * (line.targetDirection * Vector3.forward);
         Vector3 p = line.targetPoint;
         Vector3 lastPosition = line.targetPoint;
 
         float halfLength = line.length / 2;
-        Vector3 p0 = line.transform.position - line.transform.right * halfLength;
-        Vector3 p1 = line.transform.position + line.transform.right * halfLength;
 
         Vector3 tangent = Vector3.Cross(normal, Vector3.Cross(normal, Vector3.up)).normalized;
 
         Vector3 tPoint = tangent + line.targetPoint;
-        float tPointDistance = LineSDF(tPoint, p0, p1);
+        float tPointDistance = Mathf.Sqrt(sdLightSq(tPoint));
         Handles.Label(tPoint, tPointDistance.ToString());
 
         Vector3 center = tPoint + normal * tPointDistance;
@@ -119,12 +175,12 @@ public class LineLightEditor : Editor
         Handles.SphereHandleCap(0, m4, Quaternion.identity, .1f, EventType.Repaint);
         Handles.SphereHandleCap(0, m5, Quaternion.identity, .1f, EventType.Repaint);
 
-        float c = LineSDF(center, p0, p1);
+        float c = Mathf.Sqrt(sdLightSq(center));
         
         Vector3 lightDirection = Vector3.Normalize(new Vector3(
-            c - LineSDF(m1, p0, p1),
-            c - LineSDF(m3, p0, p1),
-            c - LineSDF(m5, p0, p1)
+            c - Mathf.Sqrt(sdLightSq(m1)),
+            c - Mathf.Sqrt(sdLightSq(m3)),
+            c - Mathf.Sqrt(sdLightSq(m5))
         ));
 
         Vector3 finalPoint = center - lightDirection * c;
@@ -156,7 +212,7 @@ public class LineLightEditor : Editor
 
         Handles.ArrowHandleCap(0, line.targetPoint, line.targetDirection, 1f, EventType.Repaint);
 
-        DrawRaymarchDebug();
+        // DrawRaymarchDebug();
 
         line.Update();
     }
