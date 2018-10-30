@@ -1,8 +1,11 @@
  (0,0): Unity incremental compiler server
- (0,0): watchdog active on pid: 71404
- (0,0): [10/26/2018 02:01:42.786 PM] Assembly-CSharp-Editor.dll: no prior compilation found in cache
- (0,0): [10/26/2018 02:01:42.800 PM] Assembly-CSharp-Editor.dll compiling...
- (0,0): [10/26/2018 02:01:45.001 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
- (0,0): [10/26/2018 02:01:45.072 PM] Assembly-CSharp-Editor.dll compilation finished in 2271ms  source files re-parsed: 1 metadata reloaded: 210
- (0,0): [10/26/2018 02:06:14.421 PM] Compiler cache size is now 15.39 MB
- (0,0): watchdog triggered an exit
+ (0,0): watchdog active on pid: 7436
+ (0,0): [10/29/2018 12:16:09.688 PM] Assembly-CSharp.dll: no prior compilation found in cache
+ (0,0): [10/29/2018 12:16:09.702 PM] Assembly-CSharp.dll compiling...
+ (0,0): [10/29/2018 12:16:11.754 PM] Assembly-CSharp.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp.dll
+ (0,0): [10/29/2018 12:16:11.828 PM] Assembly-CSharp.dll compilation finished in 2126ms  source files re-parsed: 1 metadata reloaded: 192
+ (0,0): [10/29/2018 12:16:12.245 PM] Assembly-CSharp-Editor.dll: no prior compilation found in cache
+ (0,0): [10/29/2018 12:16:12.257 PM] Assembly-CSharp-Editor.dll compiling...
+ (0,0): [10/29/2018 12:16:12.399 PM] Assembly-CSharp-Editor.dll: emitting IL to : D:\Documents\SimpleLitTests\Temp\Assembly-CSharp-Editor.dll
+ (0,0): [10/29/2018 12:16:12.427 PM] Assembly-CSharp-Editor.dll compilation finished in 171ms  source files re-parsed: 1 metadata reloaded: 133
+ (0,0): [10/29/2018 12:17:39.856 PM] Compiler cache size is now 17.35 MB

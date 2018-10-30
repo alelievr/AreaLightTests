@@ -314,16 +314,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff2824f77c8159940a61524fcd7d8384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 5.29
-  width: 6.51
-  range: 12.390831
-  luminance: 1.21
+  length: 35.3
+  width: 5.28
+  range: 30.447289
+  luminance: 16.8
   mode: 3
   affectSpecular: 0
   affectDiffuse: 1
   lineMaterial: {fileID: 2100000, guid: cff3f1d0b55f1ee47895e47f685762d5, type: 2}
   targetPoint: {x: 5.9017625, y: -0.8714275, z: -0.98913956}
-  targetDirection: {x: 0.114995345, y: 0.739532, z: 0.08457597, w: -0.65780276}
+  targetDirection: {x: 0.07344963, y: 0.7445719, z: 0.09713128, w: -0.6563323}
 --- !u!4 &714583121
 Transform:
   m_ObjectHideFlags: 0
@@ -331,13 +331,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714583119}
-  m_LocalRotation: {x: 0.4304499, y: -0.5512673, z: 0.33137682, w: 0.63325083}
-  m_LocalPosition: {x: -6.049, y: -10.948, z: -20.936}
+  m_LocalRotation: {x: -0.16020054, y: 0.5036601, z: -0.84135264, w: -0.11308394}
+  m_LocalPosition: {x: -1.58, y: -9.64, z: -21.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 860366639}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 65.577, y: -87.00101, z: -7.6300006}
+  m_LocalEulerAnglesHint: {x: -242.097, y: 559.428, z: -3.5419922}
 --- !u!1 &826504511
 GameObject:
   m_ObjectHideFlags: 0

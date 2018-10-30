@@ -58,10 +58,10 @@ Shader "Custom/LineLight"
             float _Smoothness;
 
             float3 _LightPosition;
-            float4x4 _LightModelMatrix;
+            // float4x4 _LightModelMatrix;
             float3 _LightRight;
             float3 _LightUp;
-            float4 _LightForward;
+            float3 _LightForward;
             float _Range;
             float _Luminance;
             float _Length;
@@ -115,12 +115,12 @@ Shader "Custom/LineLight"
             {
                 float distSq   = distances.y;
                 float distRcp  = distances.z;
-                float cosFwd   = distances.w * distRcp;
+                // float cosFwd   = distances.w * distRcp;
 
                 float attenuation = min(distRcp, 1.0 / PUNCTUAL_LIGHT_THRESHOLD);
                 attenuation *= DistanceWindowing(distSq, rangeAttenuationScale, rangeAttenuationBias);
                 // For point light model, we don't need angle attenuation
-                attenuation *= AngleAttenuation(cosFwd, lightAngleScale, lightAngleOffset);
+                // attenuation *= AngleAttenuation(cosFwd, lightAngleScale, lightAngleOffset);
 
                 // Effectively results in SmoothWindowedDistanceAttenuation(...) * SmoothAngleAttenuation(...).
                 return Sq(attenuation);
@@ -234,10 +234,10 @@ Shader "Custom/LineLight"
                 return d * d;
             }
 
-            float sdRectSq(float3 p, float2 size)
+            float sdRectSq(float3 p, float3 size)
             {
-                float3 f = abs(p) - float3(size.x, 0, size.y);
-                return dot2(max(f, 0));
+                float3 f = max(0, abs(p) - size);
+                return dot(f, f);
             }
 
             #define CROSS       0
@@ -254,7 +254,7 @@ Shader "Custom/LineLight"
                     case CROSS:
                         return sdCrossSq(p, 0.2);
                     case QUAD:
-                        return sdRectSq(p, float2(_Length / 2, _Width / 2));
+                        return sdRectSq(p, float3(_Length / 2, _Width / 2, 0));
                     default:
                         return sdAALineSq(p, data);
                 }
@@ -263,6 +263,7 @@ Shader "Custom/LineLight"
             float3 ConstructLightPosition(float3 positionLS, float3 normalLS, RaymarchData data, out float lightDistance)
             {
                 lightDistance = sqrt(sdLightSq(positionLS, data));
+                
                 float3 p = positionLS + normalLS * lightDistance;
                 float distSq = sdLightSq(p, data);
                 float2 delta = float2(0.01, 0);
@@ -294,6 +295,29 @@ Shader "Custom/LineLight"
                     specularBSDF = 0;
             }
 
+
+float SmoothDistanceWindowing(float distSquare, float rangeAttenuationScale, float rangeAttenuationBias)
+{
+    float factor = DistanceWindowing(distSquare, rangeAttenuationScale, rangeAttenuationBias);
+    return Sq(factor);
+}
+
+float EllipsoidalDistanceAttenuation(float3 unL, float3 axis, float invAspectRatio,
+                                    float rangeAttenuationScale, float rangeAttenuationBias)
+{
+    // Project the unnormalized light vector onto the axis.
+    float projL = dot(unL, axis);
+
+    // Transform the light vector so that we can work with
+    // with the ellipsoid as if it was a sphere with the radius of light's range.
+    float diff = projL - projL * invAspectRatio;
+    unL -= diff * axis;
+
+    float sqDist = dot(unL, unL);
+    return SmoothDistanceWindowing(sqDist, rangeAttenuationScale, rangeAttenuationBias);
+}
+
+
             fixed4 frag (v2f i) : SV_Target
             {
                 i.normalWS = normalize(i.normalWS);
@@ -306,8 +330,10 @@ Shader "Custom/LineLight"
                 data.p1 = float3(halfLength, 0, 0);
                 data.radius = 0.5;
 
-                float3 positionLS = mul(_LightModelMatrix, i.positionWS - _LightPosition);
-                float3 normalLS = mul(_LightModelMatrix, i.normalWS);
+                float3x3 lightMatrix = float3x3(_LightRight, _LightUp, _LightForward);
+
+                float3 positionLS = mul(lightMatrix, i.positionWS - _LightPosition);
+                float3 normalLS = mul(lightMatrix, i.normalWS);
 
                 float lightDistance;
                 float3 lightPosition = ConstructLightPosition(positionLS, normalLS, data, lightDistance);
@@ -316,25 +342,32 @@ Shader "Custom/LineLight"
                 float3 viewDir = normalize(_WorldSpaceCameraPos - i.positionWS);
                 float3 specularDirection = reflect(viewDir, i.normalWS);
 
-                float3 specularDirectionLS = mul(_LightModelMatrix, specularDirection);
+                // float3 specularDirectionLS = mul(_LightModelMatrix, specularDirection);
 
-                float3 specularLightPosition = ConstructLightPosition(positionLS, specularDirectionLS, data, lightDistance);
-                float3 specularLightDirection = normalize(positionLS - specularLightPosition);
+                // float3 specularLightPosition = ConstructLightPosition(positionLS, specularDirectionLS, data, lightDistance);
+                // float3 specularLightDirection = normalize(positionLS - specularLightPosition);
+            
+                // float invAspectRatio = saturate(_Range / (_Range + (0.5 * _Length)));
+                // float eintensity = EllipsoidalDistanceAttenuation(_LightPosition - i.positionWS, _LightRight, invAspectRatio,
+                //                                      1.0f / (_Range * _Range),
+                //                                     1.0);
+                float eintensity = EvalutePunctualLightAttenuation(lightToSample, positionLS, lightDistance);
+
+                float3 specularLightDirection = float3(0, 0, 0);
 
                 float diffuseBSDF, specularBSDF;
                 BSDF(i, specularLightDirection, diffuseBSDF, specularBSDF);
 
-                float NdotL = 0;
-
-                NdotL = ComputeWrapLighting(normalLS, normalize(-lightToSample), 0.2);
+                // float NdotL = ComputeWrapLighting(normalLS, normalize(-lightToSample), 0.0);
+                float NdotL = saturate(dot(normalLS, normalize(-lightToSample)));
 
                 if (_LightMode == QUAD)
                 {
-                    float f = saturate(-positionLS.y);
+                    float f = saturate(-positionLS.z);
                     diffuseBSDF *= f;
                 }
 
-                float intensity = NdotL * EvalutePunctualLightAttenuation(lightToSample, positionLS, lightDistance);
+                float intensity = NdotL * eintensity;//EvalutePunctualLightAttenuation(lightToSample, positionLS, lightDistance);
 
                 diffuse *= diffuseBSDF * intensity;
                 diffuse *= _Luminance;

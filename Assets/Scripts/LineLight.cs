@@ -86,15 +86,13 @@ public class LineLight : MonoBehaviour
     {
         float halfLength = length / 2;
         float halfWidth = width / 2;
-        p0 = transform.TransformPoint(Vector3.left * halfLength);
-        p1 = transform.TransformPoint(Vector3.right * halfLength);
         // p2 = transform.TransformPoint(Vector3.forward * halfLength);
         // p3 = transform.TransformPoint(Vector3.back * halfLength);
 
         Gizmos.color = new Color(0, 1, 0, .2f);
         Matrix4x4 oldMatrix = Gizmos.matrix;
         Gizmos.matrix = transform.localToWorldMatrix;
-        Gizmos.DrawCube(Vector3.zero, new Vector3(length, 0, width));
+        Gizmos.DrawCube(Vector3.zero, new Vector3(length, width, 0));
         Gizmos.matrix = oldMatrix;
 
     }
